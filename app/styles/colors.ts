@@ -14,4 +14,6 @@ export const colors = {
   DimBlack: { value: "#00000060" },
   White: { value: "#FFFFFF" },
   Primary: { value: "#6630FF" },
+  "Text/10": { value: "#E2E3E5" },
+  "Text/40": { value: "#88898B" },
 };

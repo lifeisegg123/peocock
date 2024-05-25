@@ -1,27 +1,26 @@
 import { defineConfig } from "@pandacss/dev";
-import { colors } from "./app/styles/colors";
-import { textStyles } from "./app/styles/typo";
+import { colors } from "~/styles/colors";
+import { sizes } from "~/styles/sizes";
+import { textStyles } from "~/styles/typo";
 
 export default defineConfig({
   // Whether to use css reset
   preflight: true,
 
   // Where to look for your css declarations
-  include: [
-    "./app/routes/**/*.{ts,tsx,js,jsx}",
-    "./app/components/**/*.{ts,tsx,js,jsx}",
-  ],
+  include: ["./app/**/*.{ts,tsx,js,jsx}"],
 
   // Files to exclude
   exclude: [],
-
+  presets: ["@pandacss/preset-base"],
   // Useful for theme customization
   theme: {
-    extend: {
-      textStyles,
-      tokens: {
-        colors,
-      },
+    textStyles,
+    tokens: {
+      colors,
+      sizes,
+      radii: sizes,
+      spacing: sizes,
     },
   },
 
