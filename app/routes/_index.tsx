@@ -21,7 +21,7 @@ export default function Index() {
       provider: "kakao",
     });
   };
-  const user = useLoaderData<typeof loader>();
+  const { user } = useLoaderData<typeof loader>();
   return (
     <div>
       <h1>Welcome to Remix</h1>
