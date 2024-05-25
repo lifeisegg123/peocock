@@ -9,6 +9,8 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
+import { css } from "styled-system/css";
+import { GNB } from "./components/GNB";
 import styles from "./index.css?url";
 
 export async function loader() {
@@ -33,7 +35,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body
+        className={css({
+          display: "flex",
+          alignItems: "stretch",
+          overflowX: "hidden",
+        })}
+      >
+        <GNB />
         {children}
         <ScrollRestoration />
         <script
