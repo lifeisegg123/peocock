@@ -1,4 +1,7 @@
-import type { MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, json, type MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { supabaseClient } from "~/lib/supabase.client";
+import { createSupabaseServerClient } from "~/lib/supabase.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,35 +10,23 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { headers, supabase } = createSupabaseServerClient(request);
+  const { data } = await supabase.auth.getUser();
+  return json(data, { headers });
+};
 export default function Index() {
+  const kakaoLogin = () => {
+    supabaseClient.auth.signInWithOAuth({
+      provider: "kakao",
+    });
+  };
+  const user = useLoaderData<typeof loader>();
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+      <button onClick={kakaoLogin}>kakao login</button>
+      <div>{JSON.stringify(user)}</div>
     </div>
   );
 }

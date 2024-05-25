@@ -13,10 +13,11 @@
   },
   "dependencies": {
     "@ark-ui/react": "^3.0.0",
-    "@prisma/client": "^5.14.0",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@supabase/ssr": "^0.3.0",
+    "@supabase/supabase-js": "^2.43.4",
     "isbot": "^4.1.0",
     "react": "^19.0.0-rc-935180c7e0-20240524",
     "react-dom": "^19.0.0-rc-935180c7e0-20240524"
@@ -36,7 +37,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-compiler": "0.0.0-experimental-c8b3f72-20240517",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prisma": "^5.14.0",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-plugin-babel": "^1.2.0",
