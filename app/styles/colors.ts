@@ -15,5 +15,7 @@ export const colors = {
   White: { value: "#FFFFFF" },
   Primary: { value: "#6630FF" },
   "Text/10": { value: "#E2E3E5" },
+  "Text/30": { value: "#ACADAF" },
   "Text/40": { value: "#88898B" },
+  "Text/60": { value: "#515256" },
 };

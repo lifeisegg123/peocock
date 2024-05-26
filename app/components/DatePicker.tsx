@@ -1,131 +1,169 @@
-import { DatePicker, Portal } from "@ark-ui/react";
+import {
+  DatePicker as ArkDatePicker,
+  DatePickerContentProps,
+  DatePickerRootProps,
+  DatePickerTableBodyProps,
+  DatePickerTableCellTriggerProps,
+  DatePickerTableHeadProps,
+  DatePickerViewProps,
+  Portal,
+} from "@ark-ui/react";
+import { UseDatePickerReturn } from "node_modules/@ark-ui/react/dist/components/date-picker/use-date-picker";
+import { ReactNode } from "react";
+import { css, cx } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
+import { createContext } from "~/utils/createContext";
 
-export const Basic = () => {
+type DateValue = UseDatePickerReturn["weeks"][number][number];
+
+const [DatePickerContext, useDatePickerContext] = createContext<{
+  api: UseDatePickerReturn;
+}>("DatePicker");
+
+export const DatePicker = Object.assign(Root, {
+  Trigger: ArkDatePicker.Trigger,
+  Content,
+  DayView,
+  DayViewHead,
+  DayViewBody,
+  DayViewCell,
+  Table: ArkDatePicker.Table,
+  Navigator,
+  Control: ArkDatePicker.Control,
+  Input: ArkDatePicker.Input,
+});
+
+function Root(props: DatePickerRootProps) {
+  return <ArkDatePicker.Root locale="ko" {...props} />;
+}
+
+function Content(props: DatePickerContentProps) {
   return (
-    <DatePicker.Root>
-      <DatePicker.Label>Label</DatePicker.Label>
-      <DatePicker.Control>
-        <DatePicker.Input />
-        <DatePicker.Trigger>📅</DatePicker.Trigger>
-        <DatePicker.ClearTrigger>Clear</DatePicker.ClearTrigger>
-      </DatePicker.Control>
-      <Portal>
-        <DatePicker.Positioner>
-          <DatePicker.Content>
-            <DatePicker.YearSelect />
-            <DatePicker.MonthSelect />
-            <DatePicker.View view="day">
-              <DatePicker.Context>
-                {(datePicker) => (
-                  <>
-                    <DatePicker.ViewControl>
-                      <DatePicker.PrevTrigger>Prev</DatePicker.PrevTrigger>
-                      <DatePicker.ViewTrigger>
-                        <DatePicker.RangeText />
-                      </DatePicker.ViewTrigger>
-                      <DatePicker.NextTrigger>Next</DatePicker.NextTrigger>
-                    </DatePicker.ViewControl>
-                    <DatePicker.Table>
-                      <DatePicker.TableHead>
-                        <DatePicker.TableRow>
-                          {datePicker.weekDays.map((weekDay, id) => (
-                            <DatePicker.TableHeader key={id}>
-                              {weekDay.short}
-                            </DatePicker.TableHeader>
-                          ))}
-                        </DatePicker.TableRow>
-                      </DatePicker.TableHead>
-                      <DatePicker.TableBody>
-                        {datePicker.weeks.map((week, id) => (
-                          <DatePicker.TableRow key={id}>
-                            {week.map((day, id) => (
-                              <DatePicker.TableCell key={id} value={day}>
-                                <DatePicker.TableCellTrigger>
-                                  {day.day}
-                                </DatePicker.TableCellTrigger>
-                              </DatePicker.TableCell>
-                            ))}
-                          </DatePicker.TableRow>
-                        ))}
-                      </DatePicker.TableBody>
-                    </DatePicker.Table>
-                  </>
-                )}
-              </DatePicker.Context>
-            </DatePicker.View>
-            <DatePicker.View view="month">
-              <DatePicker.Context>
-                {(datePicker) => (
-                  <>
-                    <DatePicker.ViewControl>
-                      <DatePicker.PrevTrigger>Prev</DatePicker.PrevTrigger>
-                      <DatePicker.ViewTrigger>
-                        <DatePicker.RangeText />
-                      </DatePicker.ViewTrigger>
-                      <DatePicker.NextTrigger>Next</DatePicker.NextTrigger>
-                    </DatePicker.ViewControl>
-                    <DatePicker.Table>
-                      <DatePicker.TableBody>
-                        {datePicker
-                          .getMonthsGrid({ columns: 4, format: "short" })
-                          .map((months, id) => (
-                            <DatePicker.TableRow key={id}>
-                              {months.map((month, id) => (
-                                <DatePicker.TableCell
-                                  key={id}
-                                  value={month.value}
-                                >
-                                  <DatePicker.TableCellTrigger>
-                                    {month.label}
-                                  </DatePicker.TableCellTrigger>
-                                </DatePicker.TableCell>
-                              ))}
-                            </DatePicker.TableRow>
-                          ))}
-                      </DatePicker.TableBody>
-                    </DatePicker.Table>
-                  </>
-                )}
-              </DatePicker.Context>
-            </DatePicker.View>
-            <DatePicker.View view="year">
-              <DatePicker.Context>
-                {(datePicker) => (
-                  <>
-                    <DatePicker.ViewControl>
-                      <DatePicker.PrevTrigger>Prev</DatePicker.PrevTrigger>
-                      <DatePicker.ViewTrigger>
-                        <DatePicker.RangeText />
-                      </DatePicker.ViewTrigger>
-                      <DatePicker.NextTrigger>Next</DatePicker.NextTrigger>
-                    </DatePicker.ViewControl>
-                    <DatePicker.Table>
-                      <DatePicker.TableBody>
-                        {datePicker
-                          .getYearsGrid({ columns: 4 })
-                          .map((years, id) => (
-                            <DatePicker.TableRow key={id}>
-                              {years.map((year, id) => (
-                                <DatePicker.TableCell
-                                  key={id}
-                                  value={year.value}
-                                >
-                                  <DatePicker.TableCellTrigger>
-                                    {year.label}
-                                  </DatePicker.TableCellTrigger>
-                                </DatePicker.TableCell>
-                              ))}
-                            </DatePicker.TableRow>
-                          ))}
-                      </DatePicker.TableBody>
-                    </DatePicker.Table>
-                  </>
-                )}
-              </DatePicker.Context>
-            </DatePicker.View>
-          </DatePicker.Content>
-        </DatePicker.Positioner>
-      </Portal>
-    </DatePicker.Root>
+    <Portal>
+      <ArkDatePicker.Positioner>
+        <ArkDatePicker.Content
+          {...props}
+          className={cx(css({ bgColor: "BG/CardBG", borderRadius: "6" }))}
+        />
+      </ArkDatePicker.Positioner>
+    </Portal>
   );
-};
+}
+
+function Navigator() {
+  return (
+    <ArkDatePicker.ViewControl
+      className={hstack({
+        gap: "16",
+        justify: "center",
+        pt: "20",
+        pb: "16",
+      })}
+    >
+      <ArkDatePicker.PrevTrigger>Prev</ArkDatePicker.PrevTrigger>
+      <ArkDatePicker.ViewTrigger>
+        <ArkDatePicker.RangeText
+          className={css({
+            color: "Text/10",
+            textStyle: "Body/16/B",
+          })}
+        />
+      </ArkDatePicker.ViewTrigger>
+      <ArkDatePicker.NextTrigger>Next</ArkDatePicker.NextTrigger>
+    </ArkDatePicker.ViewControl>
+  );
+}
+
+function DayView({
+  children,
+  ...props
+}: Omit<DatePickerViewProps, "children" | "view"> & {
+  children: ReactNode;
+}) {
+  return (
+    <ArkDatePicker.View {...props} view="day">
+      <ArkDatePicker.Context>
+        {(api) => (
+          <DatePickerContext value={{ api }}>{children}</DatePickerContext>
+        )}
+      </ArkDatePicker.Context>
+    </ArkDatePicker.View>
+  );
+}
+
+function DayViewHead(props: DatePickerTableHeadProps) {
+  const { api } = useDatePickerContext("DayViewHead");
+  return (
+    <ArkDatePicker.TableHead
+      {...props}
+      className={cx(css({ textStyle: "Caption/12/R", color: "Text/30" }))}
+    >
+      <ArkDatePicker.TableRow>
+        {api.weekDays.map((weekDay) => (
+          <ArkDatePicker.TableHeader
+            key={weekDay.value.day}
+            className={css({
+              width: "48",
+              height: "28",
+            })}
+          >
+            {weekDay.short}
+          </ArkDatePicker.TableHeader>
+        ))}
+      </ArkDatePicker.TableRow>
+    </ArkDatePicker.TableHead>
+  );
+}
+
+function DayViewBody({
+  renderCell,
+  ...rest
+}: DatePickerTableBodyProps & {
+  renderCell: (day: DateValue) => ReactNode;
+}) {
+  const { api } = useDatePickerContext("DayViewBody");
+  return (
+    <ArkDatePicker.TableBody {...rest}>
+      {api.weeks.map((week) => (
+        <ArkDatePicker.TableRow key={week[0].day}>
+          {week.map(renderCell)}
+        </ArkDatePicker.TableRow>
+      ))}
+    </ArkDatePicker.TableBody>
+  );
+}
+
+function DayViewCell({
+  day,
+  children,
+  ...restProps
+}: {
+  day: DateValue;
+  children?: ReactNode;
+} & DatePickerTableCellTriggerProps) {
+  return (
+    <ArkDatePicker.TableCell value={day}>
+      <ArkDatePicker.TableCellTrigger
+        {...restProps}
+        className={css({
+          textStyle: "Body/14/M",
+          color: "Text/10",
+          width: "48",
+          height: "48",
+          textAlign: "center",
+          "&[data-disabled]": {
+            color: "Text/60",
+            textStyle: "Body/14/R",
+          },
+          "&[data-selected]": {
+            textStyle: "Body/15/B",
+            backgroundColor: "Primary",
+            borderRadius: "50%",
+          },
+        })}
+      >
+        {day.day}
+      </ArkDatePicker.TableCellTrigger>
+    </ArkDatePicker.TableCell>
+  );
+}
