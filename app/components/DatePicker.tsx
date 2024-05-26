@@ -7,6 +7,7 @@ import {
   DatePickerTableHeadProps,
   DatePickerViewProps,
   Portal,
+  useDatePickerContext,
 } from "@ark-ui/react";
 import { UseDatePickerReturn } from "node_modules/@ark-ui/react/dist/components/date-picker/use-date-picker";
 import { ReactNode } from "react";
@@ -14,13 +15,8 @@ import { css, cx } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
 import SvgArrowLeft from "~/icons/lib/ArrowLeft";
 import SvgArrowRight from "~/icons/lib/ArrowRight";
-import { createContext } from "~/utils/createContext";
 
 type DateValue = UseDatePickerReturn["weeks"][number][number];
-
-const [DatePickerContext, useDatePickerContext] = createContext<{
-  api: UseDatePickerReturn;
-}>("DatePicker");
 
 export const DatePicker = Object.assign(Root, {
   Trigger: ArkDatePicker.Trigger,
@@ -45,7 +41,9 @@ function Content(props: DatePickerContentProps) {
       <ArkDatePicker.Positioner>
         <ArkDatePicker.Content
           {...props}
-          className={cx(css({ bgColor: "BG/CardBG", borderRadius: "6" }))}
+          className={cx(
+            css({ bgColor: "BG/CardBG", borderRadius: "6", px: "12" })
+          )}
         />
       </ArkDatePicker.Positioner>
     </Portal>
@@ -88,24 +86,20 @@ function DayView({
 }) {
   return (
     <ArkDatePicker.View {...props} view="day">
-      <ArkDatePicker.Context>
-        {(api) => (
-          <DatePickerContext value={{ api }}>{children}</DatePickerContext>
-        )}
-      </ArkDatePicker.Context>
+      <ArkDatePicker.Context>{() => children}</ArkDatePicker.Context>
     </ArkDatePicker.View>
   );
 }
 
 function DayViewHead(props: DatePickerTableHeadProps) {
-  const { api } = useDatePickerContext("DayViewHead");
+  const { weekDays } = useDatePickerContext();
   return (
     <ArkDatePicker.TableHead
       {...props}
       className={cx(css({ textStyle: "Caption/12/R", color: "Text/30" }))}
     >
       <ArkDatePicker.TableRow>
-        {api.weekDays.map((weekDay) => (
+        {weekDays.map((weekDay) => (
           <ArkDatePicker.TableHeader
             key={weekDay.value.day}
             className={css({
@@ -127,10 +121,10 @@ function DayViewBody({
 }: DatePickerTableBodyProps & {
   renderCell: (day: DateValue) => ReactNode;
 }) {
-  const { api } = useDatePickerContext("DayViewBody");
+  const { weeks } = useDatePickerContext();
   return (
     <ArkDatePicker.TableBody {...rest}>
-      {api.weeks.map((week) => (
+      {weeks.map((week) => (
         <ArkDatePicker.TableRow key={week[0].day}>
           {week.map(renderCell)}
         </ArkDatePicker.TableRow>
