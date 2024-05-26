@@ -116,34 +116,3 @@ function ItemGroup() {
     </ArkSelect.ItemGroup>
   );
 }
-
-export const Basic = () => {
-  const items = ["React", "Solid", "Vue"];
-  return (
-    <ArkSelect.Root items={items}>
-      <ArkSelect.Label>Framework</ArkSelect.Label>
-      <ArkSelect.Control>
-        <ArkSelect.Trigger>
-          <ArkSelect.ValueText placeholder="ArkSelect a Framework" />
-          <ArkSelect.Indicator>hi</ArkSelect.Indicator>
-        </ArkSelect.Trigger>
-      </ArkSelect.Control>
-      <Portal>
-        <ArkSelect.Positioner>
-          <ArkSelect.Content>
-            <ArkSelect.ItemGroup>
-              <ArkSelect.ItemGroupLabel>Frameworks</ArkSelect.ItemGroupLabel>
-              {items.map((item) => (
-                <ArkSelect.Item key={item} item={item}>
-                  <ArkSelect.ItemText>{item}</ArkSelect.ItemText>
-                  <ArkSelect.ItemIndicator>✓</ArkSelect.ItemIndicator>
-                </ArkSelect.Item>
-              ))}
-            </ArkSelect.ItemGroup>
-          </ArkSelect.Content>
-        </ArkSelect.Positioner>
-      </Portal>
-      <ArkSelect.HiddenSelect />
-    </ArkSelect.Root>
-  );
-};

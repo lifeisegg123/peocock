@@ -1,6 +1,6 @@
 import { type MetaFunction } from "@remix-run/node";
 import { DatePicker } from "~/components/DatePicker";
-import { Basic, Select } from "~/components/Select";
+import { Select } from "~/components/Select";
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,7 +37,6 @@ export default function Index() {
           <Select.ItemGroup />
         </Select.Content>
       </Select>
-      <Basic />
     </div>
   );
 }
