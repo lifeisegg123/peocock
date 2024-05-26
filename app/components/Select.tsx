@@ -30,37 +30,42 @@ function Root<T extends CollectionItem>(props: SelectRootProps<T>) {
 function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
   const { open } = useSelectContext();
   return (
-    <ArkSelect.Trigger
-      {...props}
-      className={cx(
-        hstack({
-          borderRadius: "6",
-          borderWidth: "1px",
-          borderColor: "BG/LineColor",
-          borderStyle: "solid",
-          bgColor: "BG/CardBG",
-          color: "Text/20",
-          py: "12",
-          pr: "12",
-          pl: "16",
-          justify: "space-between",
-          width: "320",
-          textStyle: "Body/14/M",
-          "&[data-state=open]": {
-            borderColor: "Primary",
-          },
-          "&[data-placeholder-shown]": {
-            color: "Text/60",
-          },
-        }),
-        props.className
-      )}
-    >
-      <ArkSelect.ValueText placeholder={placeholder} />
-      <ArkSelect.Indicator>
-        {open ? <SvgChevronUp /> : <SvgChevronDown />}
-      </ArkSelect.Indicator>
-    </ArkSelect.Trigger>
+    <ArkSelect.Control>
+      <ArkSelect.Trigger
+        {...props}
+        className={cx(
+          hstack({
+            borderRadius: "6",
+            borderWidth: "1px",
+            borderColor: "BG/LineColor",
+            borderStyle: "solid",
+            bgColor: "BG/CardBG",
+            color: "Text/20",
+            py: "12",
+            pr: "12",
+            pl: "16",
+            justify: "space-between",
+            width: "320",
+            textStyle: "Body/14/M",
+            "&[data-placeholder-shown]": {
+              color: "Text/60",
+            },
+            "&[data-state=open]": {
+              borderColor: "Primary",
+            },
+            "[data-focus] > &": {
+              borderColor: "Primary",
+            },
+          }),
+          props.className
+        )}
+      >
+        <ArkSelect.ValueText placeholder={placeholder} />
+        <ArkSelect.Indicator>
+          {open ? <SvgChevronUp /> : <SvgChevronDown />}
+        </ArkSelect.Indicator>
+      </ArkSelect.Trigger>
+    </ArkSelect.Control>
   );
 }
 
