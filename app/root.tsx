@@ -5,20 +5,15 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from "@remix-run/react";
 
 import { css } from "styled-system/css";
 import { GNB } from "./components/GNB";
 import styles from "./index.css?url";
 
-export async function loader() {}
-
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>();
-
   return (
     <html lang="ko">
       <head>
