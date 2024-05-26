@@ -12,6 +12,7 @@ export const colors = {
   "BG/CardBG": { value: "#151617" },
   "BG/LineColor": { value: "#1D1D1D" },
   DimBlack: { value: "#00000060" },
+  Error: { value: "#FF636B" },
   White: { value: "#FFFFFF" },
   Primary: { value: "#6630FF" },
   "Text/10": { value: "#E2E3E5" },

@@ -86,19 +86,22 @@ export function Input({
       <div
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className={hstack({
-          width: "320",
-          height: "48",
-          bgColor: "BG/CardBG",
-          borderRadius: "6",
-          "&:focus-within": {
-            outline: "solid 1px",
-            outlineColor: "Primary",
-          },
-          py: "14",
-          pr: "12",
-          pl: "16",
-        })}
+        className={cx(
+          hstack({
+            width: "320",
+            height: "48",
+            bgColor: "BG/CardBG",
+            borderRadius: "6",
+            "&:focus-within": {
+              outline: "solid 1px",
+              outlineColor: "Primary",
+            },
+            py: "14",
+            pr: "12",
+            pl: "16",
+          }),
+          className
+        )}
       >
         <input
           {...props}
@@ -106,19 +109,16 @@ export function Input({
           ref={(ref) => setInputNode(ref)}
           value={value}
           onChange={handleChange}
-          className={cx(
-            css({
-              height: "20",
-              width: "100%",
-              textStyle: "Body/14/M",
-              outline: "none",
-              color: "Text/20",
-              "&::placeholder": {
-                color: "Text/60",
-              },
-            }),
-            className
-          )}
+          className={css({
+            height: "20",
+            width: "100%",
+            textStyle: "Body/14/M",
+            outline: "none",
+            color: "Text/20",
+            "&::placeholder": {
+              color: "Text/60",
+            },
+          })}
         />
         {rightSlot}
       </div>

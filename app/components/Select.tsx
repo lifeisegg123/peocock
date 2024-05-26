@@ -34,6 +34,7 @@ function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
       <ArkSelect.Trigger
         {...props}
         className={cx(
+          props.className,
           hstack({
             borderRadius: "6",
             borderWidth: "1px",
@@ -56,8 +57,7 @@ function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
             "[data-focus] > &": {
               borderColor: "Primary",
             },
-          }),
-          props.className
+          })
         )}
       >
         <ArkSelect.ValueText placeholder={placeholder} />
