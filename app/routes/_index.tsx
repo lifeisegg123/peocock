@@ -1,5 +1,6 @@
 import { type MetaFunction } from "@remix-run/node";
 import { DatePicker } from "~/components/DatePicker";
+import { Basic, Select } from "~/components/Select";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,6 +31,13 @@ export default function Index() {
           </DatePicker.DayView>
         </DatePicker.Content>
       </DatePicker>
+      <Select items={["1", "2", "3"]}>
+        <Select.FieldBox placeholder="test123" />
+        <Select.Content>
+          <Select.ItemGroup />
+        </Select.Content>
+      </Select>
+      <Basic />
     </div>
   );
 }
