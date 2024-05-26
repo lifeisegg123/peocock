@@ -9,6 +9,7 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
+    "svgr": "npx @svgr/cli --icon 24 --typescript --no-index --jsx-runtime automatic --out-dir ./app/icons/lib -- ./app/icons/svgs",
     "typecheck": "tsc"
   },
   "dependencies": {

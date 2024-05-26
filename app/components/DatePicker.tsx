@@ -12,6 +12,8 @@ import { UseDatePickerReturn } from "node_modules/@ark-ui/react/dist/components/
 import { ReactNode } from "react";
 import { css, cx } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
+import SvgArrowLeft from "~/icons/lib/ArrowLeft";
+import SvgArrowRight from "~/icons/lib/ArrowRight";
 import { createContext } from "~/utils/createContext";
 
 type DateValue = UseDatePickerReturn["weeks"][number][number];
@@ -60,7 +62,9 @@ function Navigator() {
         pb: "16",
       })}
     >
-      <ArkDatePicker.PrevTrigger>Prev</ArkDatePicker.PrevTrigger>
+      <ArkDatePicker.PrevTrigger>
+        <SvgArrowLeft />
+      </ArkDatePicker.PrevTrigger>
       <ArkDatePicker.ViewTrigger>
         <ArkDatePicker.RangeText
           className={css({
@@ -69,7 +73,9 @@ function Navigator() {
           })}
         />
       </ArkDatePicker.ViewTrigger>
-      <ArkDatePicker.NextTrigger>Next</ArkDatePicker.NextTrigger>
+      <ArkDatePicker.NextTrigger>
+        <SvgArrowRight />
+      </ArkDatePicker.NextTrigger>
     </ArkDatePicker.ViewControl>
   );
 }
