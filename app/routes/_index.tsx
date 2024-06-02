@@ -3,6 +3,7 @@ import { DatePicker } from "~/components/DatePicker";
 import { FormField } from "~/components/FormField";
 import { InputBox } from "~/components/Input";
 import { Select } from "~/components/Select";
+import { Combobox } from "~/components/TagComboBox";
 
 export const meta: MetaFunction = () => {
   return [
@@ -61,7 +62,25 @@ export default function Index() {
         </InputBox.Content>
       </InputBox>
 
+      <Combobox items={items} multiple>
+        <Combobox.Control>
+          <Combobox.Label>테스트 콤보박스</Combobox.Label>
+          <Combobox.Trigger asChild>
+            <Combobox.TagInputBox></Combobox.TagInputBox>
+          </Combobox.Trigger>
+        </Combobox.Control>
+        <Combobox.Content>
+          <Combobox.ItemGroup />
+        </Combobox.Content>
+      </Combobox>
+
       {/* <Multiple /> */}
     </div>
   );
 }
+const items = [
+  { label: "React", value: "react" },
+  { label: "Solid", value: "solid" },
+  { label: "Vue", value: "vue" },
+  { label: "Svelte", value: "svelte" },
+];
