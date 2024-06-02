@@ -15,6 +15,7 @@ import { css, cx } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
 import SvgArrowLeft from "~/icons/lib/ArrowLeft";
 import SvgArrowRight from "~/icons/lib/ArrowRight";
+import { FormField, LabelProps } from "./FormField";
 
 type DateValue = UseDatePickerReturn["weeks"][number][number];
 
@@ -29,6 +30,7 @@ export const DatePicker = Object.assign(Root, {
   Navigator,
   Control: ArkDatePicker.Control,
   Input: ArkDatePicker.Input,
+  Label,
 });
 
 function Root(props: DatePickerRootProps) {
@@ -47,6 +49,14 @@ function Content(props: DatePickerContentProps) {
         />
       </ArkDatePicker.Positioner>
     </Portal>
+  );
+}
+
+function Label(props: LabelProps) {
+  return (
+    <ArkDatePicker.Label asChild>
+      <FormField.Label {...props} />
+    </ArkDatePicker.Label>
   );
 }
 

@@ -7,15 +7,20 @@ import {
   useSelectContext,
 } from "@ark-ui/react";
 import { CollectionItem } from "node_modules/@ark-ui/react/dist/types";
-import { css, cx } from "styled-system/css";
-import { hstack, vstack } from "styled-system/patterns";
+import { css } from "styled-system/css";
+import { vstack } from "styled-system/patterns";
 import SvgChevronDown from "~/icons/lib/ChevronDown";
 import SvgChevronUp from "~/icons/lib/ChevronUp";
+import { FieldBox as FieldBoxImpl } from "./FieldBox";
+import { FormField, LabelProps } from "./FormField";
 
 export const Select = Object.assign(Root, {
   Content,
   FieldBox,
   ItemGroup,
+  Control: ArkSelect.Control,
+  Trigger: ArkSelect.Trigger,
+  Label,
 });
 
 function Root<T extends CollectionItem>(props: SelectRootProps<T>) {
@@ -27,45 +32,25 @@ function Root<T extends CollectionItem>(props: SelectRootProps<T>) {
   );
 }
 
+function Label(props: LabelProps) {
+  return (
+    <ArkSelect.Label asChild>
+      <FormField.Label {...props} />
+    </ArkSelect.Label>
+  );
+}
+
 function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
   const { open } = useSelectContext();
   return (
-    <ArkSelect.Control>
-      <ArkSelect.Trigger
-        {...props}
-        className={cx(
-          props.className,
-          hstack({
-            borderRadius: "6",
-            borderWidth: "1px",
-            borderColor: "BG/LineColor",
-            borderStyle: "solid",
-            bgColor: "BG/CardBG",
-            color: "Text/20",
-            py: "12",
-            pr: "12",
-            pl: "16",
-            justify: "space-between",
-            width: "320",
-            textStyle: "Body/14/M",
-            "&[data-placeholder-shown]": {
-              color: "Text/60",
-            },
-            "&[data-state=open]": {
-              borderColor: "Primary",
-            },
-            "[data-focus] > &": {
-              borderColor: "Primary",
-            },
-          })
-        )}
-      >
+    <FieldBoxImpl asChild>
+      <ArkSelect.Trigger {...props}>
         <ArkSelect.ValueText placeholder={placeholder} />
         <ArkSelect.Indicator>
           {open ? <SvgChevronUp /> : <SvgChevronDown />}
         </ArkSelect.Indicator>
       </ArkSelect.Trigger>
-    </ArkSelect.Control>
+    </FieldBoxImpl>
   );
 }
 

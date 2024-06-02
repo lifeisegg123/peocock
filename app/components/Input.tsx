@@ -1,51 +1,43 @@
+import { HTMLArkProps } from "@ark-ui/react";
 import {
   ButtonHTMLAttributes,
   ChangeEvent,
   ElementRef,
-  FocusEvent,
   InputHTMLAttributes,
   ReactNode,
   useId,
   useState,
 } from "react";
-import { css, cx } from "styled-system/css";
-import { hstack } from "styled-system/patterns";
+import { css } from "styled-system/css";
 import { useControllableState } from "~/hooks/useControllableState";
 import SvgX from "~/icons/lib/X";
 import { createContext } from "~/utils/createContext";
+import { FieldBox } from "./FieldBox";
+import { FormField } from "./FormField";
 
 type InputElement = ElementRef<"input">;
 
 const [Context, useContext] = createContext<{
   value?: string;
   onValueChange: (value: string) => void;
-  isFocused: boolean;
   inputId: string;
   inputNode: InputElement | null;
-}>("Input");
+  setInputNode: (value: InputElement) => void;
+}>("InputBox");
 
-interface InputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    "value" | "defaultValue"
-  > {
+interface InputBoxProps {
   onValueChange?: (value: string) => void;
   value?: string;
   defaultValue?: string;
-  rightSlot?: ReactNode;
+  children: ReactNode;
 }
 
-export function Input({
+export function InputBox({
   value: valueProp,
   defaultValue,
-  onChange,
   onValueChange,
-  rightSlot,
-  className,
-  onFocus,
-  onBlur,
-  ...props
-}: InputProps) {
+  children,
+}: InputBoxProps) {
   const [value, setValue] = useControllableState({
     defaultProp: defaultValue ?? "",
     prop: valueProp,
@@ -56,77 +48,25 @@ export function Input({
 
   const inputId = useId();
 
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-    onChange?.(e);
-  };
-
-  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    onFocus?.(e);
-    setIsFocused(true);
-  };
-
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    onBlur?.(e);
-    setIsFocused(false);
-  };
-
   return (
     <Context
       value={{
         onValueChange: setValue,
         inputNode,
         value,
-        isFocused,
         inputId,
+        setInputNode,
       }}
     >
-      <div
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={cx(
-          hstack({
-            width: "320",
-            height: "48",
-            bgColor: "BG/CardBG",
-            borderRadius: "6",
-            "&:focus-within": {
-              outline: "solid 1px",
-              outlineColor: "Primary",
-            },
-            py: "14",
-            pr: "12",
-            pl: "16",
-          }),
-          className
-        )}
-      >
-        <input
-          {...props}
-          id={inputId}
-          ref={(ref) => setInputNode(ref)}
-          value={value}
-          onChange={handleChange}
-          className={css({
-            height: "20",
-            width: "100%",
-            textStyle: "Body/14/M",
-            outline: "none",
-            color: "Text/20",
-            "&::placeholder": {
-              color: "Text/60",
-            },
-          })}
-        />
-        {rightSlot}
-      </div>
+      {children}
     </Context>
   );
 }
 
-Input.Clear = Clear;
+InputBox.Clear = Clear;
+InputBox.Content = FieldBox;
+InputBox.Input = Input;
+InputBox.Label = Label;
 
 function Clear(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { onValueChange, inputNode, value } = useContext("Clear");
@@ -144,4 +84,34 @@ function Clear(props: ButtonHTMLAttributes<HTMLButtonElement>) {
       <SvgX />
     </button>
   );
+}
+
+function Input(props: InputHTMLAttributes<HTMLInputElement>) {
+  const { setInputNode, inputId, value, onValueChange } = useContext("Input");
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onValueChange(e.target.value);
+    props.onChange?.(e);
+  };
+  return (
+    <input
+      {...props}
+      id={inputId}
+      ref={(ref) => ref && setInputNode(ref)}
+      value={value}
+      onChange={handleChange}
+      className={css({
+        height: "20",
+        width: "100%",
+        outline: "none",
+        _placeholder: {
+          color: "Text/60",
+        },
+      })}
+    />
+  );
+}
+
+function Label(props: HTMLArkProps<"label">) {
+  const { inputId } = useContext("Label");
+  return <FormField.Label htmlFor={inputId} {...props} />;
 }

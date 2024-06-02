@@ -1,9 +1,22 @@
-import { defineConfig } from "@pandacss/dev";
+import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
 import { colors } from "~/styles/colors";
 import { sizes } from "~/styles/sizes";
 import { textStyles } from "~/styles/typo";
 
+const globalCss = defineGlobalStyles({
+  html: {
+    height: "100%",
+  },
+  "*:focus-visible": {
+    outlineColor: "Primary",
+    outlineWidth: "1",
+    outlineStyle: "solid",
+    outlineOffset: 0,
+  },
+});
+
 export default defineConfig({
+  globalCss,
   // Whether to use css reset
   preflight: true,
 
