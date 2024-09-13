@@ -28,10 +28,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           display: "flex",
           alignItems: "stretch",
           overflowX: "hidden",
+          backgroundColor: "BG/Background",
         })}
       >
         <GNB />
-        {children}
+        <main className={css({ width: "100%" })}>{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>

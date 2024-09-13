@@ -1,16 +1,9 @@
-import { DragOverEvent } from "@dnd-kit/core";
-import {
-  arrayMove,
-  horizontalListSortingStrategy,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { type MetaFunction } from "@remix-run/node";
-import { useState } from "react";
-import { css } from "styled-system/css";
-import { hstack, vstack } from "styled-system/patterns";
+import { hstack } from "styled-system/patterns";
+import { Button } from "~/components/Button";
 import { DatePicker } from "~/components/DatePicker";
-import { DnD } from "~/components/Dnd";
 import { FormField } from "~/components/FormField";
+import { Header } from "~/components/Header";
 import { InputBox } from "~/components/Input";
 import { Kanban } from "~/components/Kanban";
 import { Select } from "~/components/Select";
@@ -25,8 +18,11 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div>
-      <h1>Welcome to Remix</h1>
+    <>
+      <Header
+        leftNode={<input />}
+        rightNode={<Button size="36">로그인</Button>}
+      />
 
       <div className={hstack()}>
         <span>
@@ -93,7 +89,7 @@ export default function Index() {
           <Kanban />
         </span>
       </div>
-    </div>
+    </>
   );
 }
 
