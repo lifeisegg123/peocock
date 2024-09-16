@@ -1,4 +1,6 @@
 import { type MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
+import { css } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
 import { Button } from "~/components/Button";
 import { DatePicker } from "~/components/DatePicker";
@@ -8,6 +10,7 @@ import { InputBox } from "~/components/Input";
 import { Kanban } from "~/components/Kanban";
 import { Select } from "~/components/Select";
 import { Combobox } from "~/components/TagComboBox";
+import { LoginButton } from "~/feature/auth/login";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,7 +24,17 @@ export default function Index() {
     <>
       <Header
         leftNode={<input />}
-        rightNode={<Button size="36">로그인</Button>}
+        rightNode={
+          <span className={hstack({ gap: 60 })}>
+            <Link
+              className={css({ textStyle: "Caption/13/M", color: "Secondary" })}
+              to="/recruit"
+            >
+              + 모집글 작성
+            </Link>
+            <LoginButton />
+          </span>
+        }
       />
 
       <div className={hstack()}>

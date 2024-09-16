@@ -6,6 +6,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 const ReactCompilerConfig = {};
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "~/*": "./app/*",
+    },
+  },
   plugins: [
     remix({
       future: {

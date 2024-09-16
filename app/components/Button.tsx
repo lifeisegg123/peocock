@@ -1,12 +1,13 @@
 import { ButtonHTMLAttributes } from "react";
 import { RecipeVariantProps, cva, cx } from "styled-system/css";
+import { HTMLArkProps, ark } from "@ark-ui/react";
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
+export type ButtonProps = HTMLArkProps<"button"> &
   RecipeVariantProps<typeof buttonStyle>;
 
 export function Button({ variant, size, ...props }: ButtonProps) {
   return (
-    <button
+    <ark.button
       {...props}
       className={cx(buttonStyle({ variant, size }), props.className)}
     />
@@ -19,6 +20,7 @@ const buttonStyle = cva({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    textStyle: "Body/16/M",
   },
   defaultVariants: {
     size: "52",
@@ -63,6 +65,7 @@ const buttonStyle = cva({
       "36": {
         height: "36",
         px: "12",
+        textStyle: "Body/14/M",
       },
     },
   },
