@@ -15,6 +15,7 @@ export const colors = {
   Error: { value: "#FF636B" },
   White: { value: "#FFFFFF" },
   Primary: { value: "#6630FF" },
+  Secondary: { value: "#C1ABFF" },
   "Text/10": { value: "#E2E3E5" },
   "Text/20": { value: "#D0D1D3" },
   "Text/30": { value: "#ACADAF" },
