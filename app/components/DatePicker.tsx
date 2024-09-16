@@ -12,7 +12,7 @@ import {
 import { UseDatePickerReturn } from "node_modules/@ark-ui/react/dist/components/date-picker/use-date-picker";
 import { ReactNode } from "react";
 import { css, cx } from "styled-system/css";
-import { hstack } from "styled-system/patterns";
+import { flex, hstack } from "styled-system/patterns";
 import SvgArrowLeft from "~/icons/lib/ArrowLeft";
 import SvgArrowRight from "~/icons/lib/ArrowRight";
 import { FormField, LabelProps } from "./FormField";
@@ -135,7 +135,7 @@ function DayViewBody({
   return (
     <ArkDatePicker.TableBody {...rest}>
       {weeks.map((week) => (
-        <ArkDatePicker.TableRow key={week[0].day}>
+        <ArkDatePicker.TableRow key={week[0]?.day}>
           {week.map(renderCell)}
         </ArkDatePicker.TableRow>
       ))}
@@ -155,12 +155,13 @@ function DayViewCell({
     <ArkDatePicker.TableCell value={day}>
       <ArkDatePicker.TableCellTrigger
         {...restProps}
-        className={css({
+        className={flex({
           textStyle: "Body/14/M",
           color: "Text/10",
           width: "48",
           height: "48",
-          textAlign: "center",
+          align: "center",
+          justify: "center",
           "&[data-disabled]": {
             color: "Text/60",
             textStyle: "Body/14/R",
