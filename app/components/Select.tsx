@@ -75,6 +75,7 @@ function Content(props: SelectContentProps) {
 
 function ItemGroup() {
   const { collection } = useSelectContext();
+  console.log([...collection]);
   return (
     <ArkSelect.ItemGroup
       className={css({
@@ -91,13 +92,13 @@ function ItemGroup() {
         },
       })}
     >
-      {[...collection].map((item) => (
-        <ArkSelect.Item key={item.item?.value ?? item.item} item={item}>
-          <ArkSelect.ItemText>
-            {item.item?.label ?? item.item}
-          </ArkSelect.ItemText>
-        </ArkSelect.Item>
-      ))}
+      {[...collection].map((item) => {
+        return (
+          <ArkSelect.Item key={item?.value ?? item} item={item}>
+            <ArkSelect.ItemText>{item?.label ?? item}</ArkSelect.ItemText>
+          </ArkSelect.Item>
+        );
+      })}
     </ArkSelect.ItemGroup>
   );
 }
