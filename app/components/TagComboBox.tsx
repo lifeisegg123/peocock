@@ -8,27 +8,26 @@ import {
 } from "@ark-ui/react";
 import { css } from "styled-system/css";
 import { hstack, vstack } from "styled-system/patterns";
+import SvgX from "~/icons/lib/X";
 import { FieldBox } from "./FieldBox";
 import { FormField, LabelProps } from "./FormField";
 import { Tag } from "./Tag";
 
 // TODO: maybe some refactor into multiple components. maybe not
 function TagInputBox(props: TagsInputRootProps) {
-  const { value, setValue, collection, setOpen, setInputValue, inputProps } =
+  const { value, setValue, collection, setOpen, setInputValue, getInputProps } =
     useComboboxContext();
+
   return (
     <TagsInput.Root
       {...props}
-      ids={{ input: inputProps.id }}
+      ids={{ input: getInputProps().id }}
       validate={({ inputValue }) => collection.has(inputValue)}
       value={value}
       onValueChange={(v) => setValue(v.value)}
       onInputValueChange={(v) => {
         setInputValue(v.inputValue);
         setOpen(true);
-      }}
-      onKeyDown={(e) => {
-        console.log(e.key);
       }}
       asChild
     >
@@ -37,17 +36,25 @@ function TagInputBox(props: TagsInputRootProps) {
           {(tagInput) => (
             <>
               <TagsInput.Control className={hstack({})}>
-                {value.map((value, index) => (
+                {tagInput.value.map((value, index) => (
                   <TagsInput.Item key={index} index={index} value={value}>
                     <TagsInput.ItemPreview asChild>
                       <Tag
                         rightNode={
                           <TagsInput.ItemDeleteTrigger>
-                            X
+                            <SvgX
+                              className={css({
+                                width: 14,
+                                height: 14,
+                                color: "Text/40",
+                              })}
+                            />
                           </TagsInput.ItemDeleteTrigger>
                         }
                       >
-                        <TagsInput.ItemText>{value}</TagsInput.ItemText>
+                        <TagsInput.ItemText>
+                          {collection.find(value).label}
+                        </TagsInput.ItemText>
                       </Tag>
                     </TagsInput.ItemPreview>
                   </TagsInput.Item>
@@ -101,7 +108,7 @@ function Content(props: ComboboxContentProps) {
           <Combobox.Content
             {...props}
             className={vstack({
-              width: "320",
+              width: "100%",
               bgColor: "BG/LineColor",
               borderRadius: "4",
               p: "8",
@@ -114,7 +121,11 @@ function Content(props: ComboboxContentProps) {
 }
 
 function ItemGroup() {
-  const { collection } = useComboboxContext();
+  const { collection, inputValue } = useComboboxContext();
+  const arr = [...collection];
+  const filtered = arr.filter((v) =>
+    v.label.toLowerCase().includes(inputValue.toLowerCase())
+  );
   return (
     <Combobox.ItemGroup
       className={css({
@@ -131,9 +142,9 @@ function ItemGroup() {
         },
       })}
     >
-      {collection.toArray().map((item) => (
+      {(filtered.length ? filtered : arr).map((item) => (
         <Combobox.Item key={item.value} item={item}>
-          <Combobox.ItemText>{item.value}</Combobox.ItemText>
+          <Combobox.ItemText>{item.label}</Combobox.ItemText>
         </Combobox.Item>
       ))}
     </Combobox.ItemGroup>
