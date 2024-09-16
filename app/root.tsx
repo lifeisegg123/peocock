@@ -5,6 +5,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
+  useLoaderData,
 } from "@remix-run/react";
 
 import { css } from "styled-system/css";
@@ -13,7 +15,17 @@ import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
+export async function loader() {
+  return json({
+    ENV: {
+      KAKAO_APP_KEY: process.env.KAKAO_APP_KEY,
+    },
+  });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <html lang="ko">
       <head>
@@ -34,6 +46,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <GNB />
         <main className={css({ width: "100%" })}>{children}</main>
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
         <Scripts />
       </body>
     </html>
