@@ -4,7 +4,7 @@ import {
   horizontalListSortingStrategy,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { startTransition, useState } from "react";
+import { startTransition, useId, useState } from "react";
 import { css } from "styled-system/css";
 import { hstack, vstack } from "styled-system/patterns";
 import { DnD } from "./Dnd";
@@ -59,17 +59,20 @@ export function Kanban() {
             };
           } else if (column.id === overColumn.id) {
             const newInsertIndex = newIndex();
-            return {
-              ...column,
-              values: [
-                ...overItems.slice(0, newInsertIndex),
-                activeItems[activeIndex],
-                ...overItems.slice(newInsertIndex, overItems.length),
-              ],
-            };
-          } else {
-            return column;
+            const activeItem = activeItems[activeIndex];
+
+            if (activeItem) {
+              return {
+                ...column,
+                values: [
+                  ...overItems.slice(0, newInsertIndex),
+                  activeItem,
+                  ...overItems.slice(newInsertIndex),
+                ],
+              };
+            }
           }
+          return column;
         });
       });
     });
@@ -112,10 +115,21 @@ export function Kanban() {
     }
   };
 
+  const id = useId();
+  const createId = (str: string) => `${id}-${str}`;
+
   return (
-    <DnD onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+    <DnD
+      id={createId("root")}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+    >
       <ul className={hstack({ alignItems: "stretch", height: "240" })}>
-        <DnD.SortableRoot items={dnd} strategy={horizontalListSortingStrategy}>
+        <DnD.SortableRoot
+          id={createId("sortable-row-root")}
+          items={dnd}
+          strategy={horizontalListSortingStrategy}
+        >
           {dnd.map((v) => (
             <DnD.Sortable
               className={css({ height: "100%", overflow: "auto" })}
@@ -132,6 +146,7 @@ export function Kanban() {
               >
                 <div>{v.id} 열</div>
                 <DnD.SortableRoot
+                  id={createId(`sortable-${id}-column-root`)}
                   items={v.values}
                   strategy={verticalListSortingStrategy}
                 >

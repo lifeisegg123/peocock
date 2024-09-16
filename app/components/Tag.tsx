@@ -35,6 +35,7 @@ const tagStyle = cva({
     borderRadius: "2",
     display: "flex",
     alignItems: "stretch",
+    textStyle: "Caption/12/M",
   },
   variants: {
     size: {
@@ -80,6 +81,7 @@ const tagStyle = cva({
     hasRightNode: {
       true: {
         gap: "2",
+        pr: 4,
       },
     },
   },

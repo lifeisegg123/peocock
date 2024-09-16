@@ -16,7 +16,7 @@ export function FieldBox(props: ComponentProps<typeof ark.div>) {
           color: "Text/20",
           pr: "12",
           pl: "16",
-          width: "320",
+          width: "100%",
           height: "48",
           justify: "space-between",
           textStyle: "Body/14/M",

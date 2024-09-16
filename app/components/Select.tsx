@@ -24,12 +24,7 @@ export const Select = Object.assign(Root, {
 });
 
 function Root<T extends CollectionItem>(props: SelectRootProps<T>) {
-  return (
-    <ArkSelect.Root
-      {...props}
-      positioning={{ gutter: 8, ...props.positioning }}
-    />
-  );
+  return <ArkSelect.Root {...props} />;
 }
 
 function Label(props: LabelProps) {
@@ -43,14 +38,17 @@ function Label(props: LabelProps) {
 function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
   const { open } = useSelectContext();
   return (
-    <FieldBoxImpl asChild>
-      <ArkSelect.Trigger {...props}>
-        <ArkSelect.ValueText placeholder={placeholder} />
+    <ArkSelect.Trigger {...props} asChild>
+      <FieldBoxImpl>
+        <ArkSelect.ValueText
+          className={css({ color: "White", textStyle: "Body/14/M" })}
+          placeholder={placeholder}
+        />
         <ArkSelect.Indicator>
           {open ? <SvgChevronUp /> : <SvgChevronDown />}
         </ArkSelect.Indicator>
-      </ArkSelect.Trigger>
-    </FieldBoxImpl>
+      </FieldBoxImpl>
+    </ArkSelect.Trigger>
   );
 }
 
@@ -62,7 +60,7 @@ function Content(props: SelectContentProps) {
           <ArkSelect.Content
             {...props}
             className={vstack({
-              width: "320",
+              width: "100%",
               bgColor: "BG/LineColor",
               borderRadius: "4",
               p: "8",
@@ -93,9 +91,11 @@ function ItemGroup() {
         },
       })}
     >
-      {collection.toArray().map((item) => (
-        <ArkSelect.Item key={item.item} item={item}>
-          <ArkSelect.ItemText>{item.item}</ArkSelect.ItemText>
+      {[...collection].map((item) => (
+        <ArkSelect.Item key={item.item?.value ?? item.item} item={item}>
+          <ArkSelect.ItemText>
+            {item.item?.label ?? item.item}
+          </ArkSelect.ItemText>
         </ArkSelect.Item>
       ))}
     </ArkSelect.ItemGroup>
