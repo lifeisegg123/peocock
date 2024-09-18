@@ -41,7 +41,7 @@ function FieldBox({ placeholder, ...props }: SelectValueTextProps) {
     <ArkSelect.Trigger {...props} asChild>
       <FieldBoxImpl>
         <ArkSelect.ValueText
-          className={css({ color: "White", textStyle: "Body/14/M" })}
+          className={css({ textStyle: "Body/14/M" })}
           placeholder={placeholder}
         />
         <ArkSelect.Indicator>
@@ -75,7 +75,7 @@ function Content(props: SelectContentProps) {
 
 function ItemGroup() {
   const { collection } = useSelectContext();
-  console.log([...collection]);
+
   return (
     <ArkSelect.ItemGroup
       className={css({
