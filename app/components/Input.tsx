@@ -8,7 +8,7 @@ import {
   useId,
   useState,
 } from "react";
-import { css } from "styled-system/css";
+import { css, cx } from "styled-system/css";
 import { useControllableState } from "~/hooks/useControllableState";
 import SvgX from "~/icons/lib/X";
 import { createContext } from "~/utils/createContext";
@@ -99,14 +99,18 @@ function Input(props: InputHTMLAttributes<HTMLInputElement>) {
       ref={(ref) => ref && setInputNode(ref)}
       value={value}
       onChange={handleChange}
-      className={css({
-        height: "20",
-        width: "100%",
-        outline: "none",
-        _placeholder: {
-          color: "Text/60",
-        },
-      })}
+      className={cx(
+        css({
+          height: "20",
+          width: "100%",
+          outline: "none",
+          textStyle: "Body/14/M",
+          _placeholder: {
+            color: "Text/60",
+          },
+        }),
+        props.className
+      )}
     />
   );
 }

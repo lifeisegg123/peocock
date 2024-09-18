@@ -1,6 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useCallbackRef } from "./useCallbackRef";
 
+export type ControllableState<T, K extends string = "value"> = {
+  [P in
+    | K
+    | `default${Capitalize<K>}`
+    | `onChange${Capitalize<K>}`]?: P extends K
+    ? T | undefined
+    : P extends `default${Capitalize<K>}`
+    ? T | undefined
+    : P extends `onChange${Capitalize<K>}`
+    ? (state: T) => void
+    : never;
+};
+
 type UseControllableStateParams<T> = {
   prop?: T | undefined;
   defaultProp?: T | undefined;

@@ -9,6 +9,7 @@ export function Button({ variant, size, ...props }: ButtonProps) {
   return (
     <ark.button
       {...props}
+      type={props.type || "button"}
       className={cx(buttonStyle({ variant, size }), props.className)}
     />
   );

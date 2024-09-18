@@ -14,7 +14,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     client: createApiClient(),
     body: { code, provider: "KAKAO" },
   });
-  console.log(headers);
   const setCookie = headers.get("set-cookie");
   const responseHeaders = new Headers();
   responseHeaders.set("set-cookie", setCookie ?? "");

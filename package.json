@@ -9,8 +9,8 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "svgr": "npx @svgr/cli --icon 24 --typescript --no-index --jsx-runtime automatic --out-dir ./app/icons/lib -- ./app/icons/svgs",
-    "openapi-ts": "openapi-ts",
+    "gen:icon": "npx @svgr/cli --icon 24 --typescript --no-index --jsx-runtime automatic --out-dir ./app/icons/lib -- ./app/icons/svgs",
+    "gen:api": "openapi-ts",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -21,10 +21,19 @@
     "@remix-run/node": "^2.12.0",
     "@remix-run/react": "^2.12.0",
     "@remix-run/serve": "^2.12.0",
+    "@tiptap-pro/extension-drag-handle-react": "^2.11.2",
+    "@tiptap/extension-code": "^2.7.1",
+    "@tiptap/extension-color": "^2.7.1",
+    "@tiptap/extension-highlight": "^2.7.1",
+    "@tiptap/extension-placeholder": "^2.7.1",
+    "@tiptap/extension-text-style": "^2.7.1",
+    "@tiptap/pm": "^2.7.1",
+    "@tiptap/react": "^2.7.1",
+    "@tiptap/starter-kit": "^2.7.1",
     "isbot": "^5.1.17",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "remeda": "^2.12.1"
+    "remeda": "^2.14.0"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.53.0",
