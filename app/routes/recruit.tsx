@@ -1,8 +1,10 @@
-import { useNavigate } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Form, json, useLoaderData, useNavigate } from "@remix-run/react";
 import { ReactNode } from "react";
 import { css } from "styled-system/css";
 import { hstack, vstack } from "styled-system/patterns";
-import { CreateRecruitmentRequest } from "~/api";
+import { createRecruitment, CreateRecruitmentRequest, getStatic } from "~/api";
+import { createApiClient } from "~/api/client";
 import { Button } from "~/components/Button";
 import { CountController } from "~/components/CountController";
 import { DatePicker } from "~/components/DatePicker";
@@ -31,11 +33,59 @@ const RECRUIT_PURPOSE: Array<{
   { label: "기타", value: "ETC" },
 ];
 
+const INTERVAL: Array<{
+  label: string;
+  value: CreateRecruitmentRequest["interval"]["type"];
+}> = [
+  { label: "주", value: "WEEKLY" },
+  { label: "월", value: "MONTHLY" },
+  { label: "추후 협의", value: "TO_BE_DISCUSSED" },
+];
+
+const PROCESS_TYPE: Array<{
+  label: string;
+  value: CreateRecruitmentRequest["processType"];
+}> = [
+  { label: "온라인", value: "ONLINE" },
+  { label: "오프라인", value: "OFFLINE" },
+  { label: "온/오프라인", value: "BOTH" },
+];
+
+const METHOD_TYPE: Array<{
+  label: string;
+  value: CreateRecruitmentRequest["method"]["type"];
+}> = [
+  { label: "오픈채팅", value: "OPEN_CHAT" },
+  { label: "구글폼", value: "GOOGLE_FORM" },
+  { label: "메일", value: "EMAIL" },
+];
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const body = Object.fromEntries(
+    formData.entries()
+  ) as unknown as CreateRecruitmentRequest; // FIXME: validation
+  const { data, error, response } = await createRecruitment({
+    client: createApiClient(),
+    body,
+  });
+  console.log(body, data, error, response.status);
+  return null;
+};
+
+export const loader = async ({}: LoaderFunctionArgs) => {
+  const { data, error, request } = await getStatic({
+    client: createApiClient(),
+  });
+  return json(data);
+};
+
 export default function Recruit() {
   const navigate = useNavigate();
 
   return (
-    <form
+    <Form
+      method="post"
       className={vstack({
         alignItems: "stretch",
         justify: "stretch",
@@ -59,9 +109,9 @@ export default function Recruit() {
               gap: 40,
             })}
           >
-            <Select items={RECRUIT_TYPES}>
+            <Select name="type" required items={RECRUIT_TYPES}>
               <Select.Control>
-                <Select.Label required>모집 구분</Select.Label>
+                <Select.Label>모집 구분</Select.Label>
                 <Select.FieldBox placeholder="스터디 / 프로젝트 / 네트워킹" />
               </Select.Control>
               <Select.Content>
@@ -69,9 +119,9 @@ export default function Recruit() {
               </Select.Content>
             </Select>
             <PositionField />
-            <Select items={RECRUIT_PURPOSE}>
+            <Select name="purpose" required items={RECRUIT_PURPOSE}>
               <Select.Control>
-                <Select.Label required>모집 목적</Select.Label>
+                <Select.Label>모집 목적</Select.Label>
                 <Select.FieldBox placeholder="수입,창업 / 포트폴리오 / 기타" />
               </Select.Control>
               <Select.Content>
@@ -79,9 +129,14 @@ export default function Recruit() {
               </Select.Content>
             </Select>
             <div className={hstack({ alignItems: "flex-end" })}>
-              <Select className={css({ width: "40%" })} items={RECRUIT_PURPOSE}>
+              <Select
+                name="method_type"
+                required
+                className={css({ width: "40%" })}
+                items={METHOD_TYPE}
+              >
                 <Select.Control>
-                  <Select.Label required>모집 수단</Select.Label>
+                  <Select.Label>모집 수단</Select.Label>
                   <Select.FieldBox placeholder="오픈채팅 / 구글폼 / 메일" />
                 </Select.Control>
                 <Select.Content>
@@ -90,14 +145,22 @@ export default function Recruit() {
               </Select>
               <InputBox>
                 <InputBox.Content className={css({ width: "60%" })}>
-                  <InputBox.Input placeholder="링크를 입력해주세요" />
+                  <InputBox.Input
+                    name="method_contact"
+                    placeholder="링크를 입력해주세요"
+                  />
                 </InputBox.Content>
               </InputBox>
             </div>
             <div className={hstack({})}>
-              <Select className={css({ width: "40%" })} items={RECRUIT_PURPOSE}>
+              <Select
+                name="processType"
+                required
+                className={css({ width: "40%" })}
+                items={PROCESS_TYPE}
+              >
                 <Select.Control>
-                  <Select.Label required>진행 방식</Select.Label>
+                  <Select.Label>진행 방식</Select.Label>
                   <Select.FieldBox placeholder="온라인 / 오프라인 / 온/오프라인" />
                 </Select.Control>
                 <Select.Content>
@@ -105,7 +168,7 @@ export default function Recruit() {
                 </Select.Content>
               </Select>
 
-              <DatePicker className={css({ width: "60%" })}>
+              <DatePicker name="endedAt" className={css({ width: "60%" })}>
                 <DatePicker.Control>
                   <DatePicker.Label>모집 마감일</DatePicker.Label>
                   <DatePicker.Trigger asChild>
@@ -133,7 +196,7 @@ export default function Recruit() {
               </DatePicker>
             </div>
             <div className={hstack({ alignItems: "flex-end" })}>
-              <DatePicker className={css({ width: "60%" })}>
+              <DatePicker name="duration" className={css({ width: "60%" })}>
                 <DatePicker.Control>
                   <DatePicker.Label>프로젝트 기간</DatePicker.Label>
                   <DatePicker.Trigger asChild>
@@ -150,9 +213,7 @@ export default function Recruit() {
                       <DatePicker.DayViewHead></DatePicker.DayViewHead>
                       <DatePicker.DayViewBody
                         renderCell={(day) => (
-                          <DatePicker.DayViewCell day={day}>
-                            ??
-                          </DatePicker.DayViewCell>
+                          <DatePicker.DayViewCell day={day} />
                         )}
                       />
                     </DatePicker.Table>
@@ -160,9 +221,14 @@ export default function Recruit() {
                 </DatePicker.Content>
               </DatePicker>
 
-              <Select className={css({ width: "40%" })} items={RECRUIT_PURPOSE}>
+              <Select
+                name="interval_type"
+                required
+                className={css({ width: "40%" })}
+                items={INTERVAL}
+              >
                 <Select.Control>
-                  <Select.Label required>진행주기</Select.Label>
+                  <Select.Label>진행주기</Select.Label>
                   <Select.FieldBox placeholder="주 / 월 / 추후 협의" />
                 </Select.Control>
                 <Select.Content>
@@ -170,7 +236,11 @@ export default function Recruit() {
                 </Select.Content>
               </Select>
 
-              <CountController affix="회" minValue={1} />
+              <CountController
+                name="interval_frequency"
+                affix="회"
+                minValue={1}
+              />
             </div>
           </div>
         </span>
@@ -179,6 +249,7 @@ export default function Recruit() {
           <InputBox>
             <InputBox.Content className={css({ mb: 12, height: 60 })}>
               <InputBox.Input
+                name="title"
                 className={css({
                   textStyle: "Headline/20/M",
                 })}
@@ -186,7 +257,9 @@ export default function Recruit() {
               />
             </InputBox.Content>
           </InputBox>
-          <Editor />
+          <Editor>
+            <Editor.HiddenInput name="content" />
+          </Editor>
         </span>
       </div>
       <div
@@ -199,9 +272,11 @@ export default function Recruit() {
         <Button size="36" variant="secondary" onClick={() => navigate(-1)}>
           취소
         </Button>
-        <Button size="36">작성 완료</Button>
+        <Button type="submit" size="36">
+          작성 완료
+        </Button>
       </div>
-    </form>
+    </Form>
   );
 }
 

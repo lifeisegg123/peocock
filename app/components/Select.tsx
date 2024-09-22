@@ -28,9 +28,10 @@ function Root<T extends CollectionItem>(props: SelectRootProps<T>) {
 }
 
 function Label(props: LabelProps) {
+  const { getHiddenSelectProps } = useSelectContext();
   return (
     <ArkSelect.Label asChild>
-      <FormField.Label {...props} />
+      <FormField.Label required={getHiddenSelectProps().required} {...props} />
     </ArkSelect.Label>
   );
 }

@@ -1,4 +1,4 @@
-import { withEditor, WithEditorProps } from "./withEditor";
+import { withEditor } from "./withEditor";
 import { cva } from "styled-system/css";
 import { flex } from "styled-system/patterns";
 import SvgBulletList from "~/icons/lib/BulletList";
@@ -6,7 +6,7 @@ import SvgOrderList from "~/icons/lib/OrderList";
 import { ReactNode } from "react";
 import SvgCodeBlock from "~/icons/lib/CodeBlock";
 
-export const Menu = withEditor(({ editor }: WithEditorProps) => {
+export const Menu = withEditor(({ editor }) => {
   return (
     <div className={menuStyle}>
       <input

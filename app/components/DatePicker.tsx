@@ -173,7 +173,7 @@ function DayViewCell({
           },
         })}
       >
-        {day.day}
+        <span>{day.day}</span>
       </ArkDatePicker.TableCellTrigger>
     </ArkDatePicker.TableCell>
   );

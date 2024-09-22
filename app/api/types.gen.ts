@@ -46,9 +46,25 @@ export type CreateRecruitmentResponse = {
 export type SignUpRequest = {
     code: string;
     provider: 'GOOGLE' | 'KAKAO';
+    redirectUri?: string;
 };
 
 export type provider = 'GOOGLE' | 'KAKAO';
+
+export type Position = {
+    id: number;
+    name: string;
+};
+
+export type Skill = {
+    id: number;
+    name: string;
+};
+
+export type StaticResponse = {
+    positions: Array<Position>;
+    skills: Array<Skill>;
+};
 
 export type PositionId = {
     value: number;
@@ -74,24 +90,24 @@ export type Pageable = {
 export type PageSearchRecruitmentDto = {
     totalElements?: number;
     totalPages?: number;
+    first?: boolean;
+    last?: boolean;
+    pageable?: PageableObject;
     size?: number;
     content?: Array<SearchRecruitmentDto>;
     number?: number;
     sort?: Array<SortObject>;
-    first?: boolean;
-    last?: boolean;
     numberOfElements?: number;
-    pageable?: PageableObject;
     empty?: boolean;
 };
 
 export type PageableObject = {
-    offset?: number;
-    sort?: Array<SortObject>;
     paged?: boolean;
     pageNumber?: number;
     pageSize?: number;
     unpaged?: boolean;
+    offset?: number;
+    sort?: Array<SortObject>;
 };
 
 export type SearchRecruitmentDto = {
@@ -129,6 +145,10 @@ export type SignInData = {
 export type SignInResponse = (unknown);
 
 export type SignInError = unknown;
+
+export type GetStaticResponse = (StaticResponse);
+
+export type GetStaticError = unknown;
 
 export type SearchRecruitmentsData = {
     query: {

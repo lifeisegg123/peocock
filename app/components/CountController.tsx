@@ -12,6 +12,7 @@ import { useRef, useState } from "react";
 type CountControllerProps = {
   affix: string;
   minValue: number;
+  name?: string;
 } & HTMLArkProps<"div"> &
   ControllableState<number>;
 
@@ -21,6 +22,7 @@ export function CountController({
   value: valueFromProps,
   affix,
   minValue,
+  name,
   ...props
 }: CountControllerProps) {
   const [value, setValue] = useControllableState({
@@ -29,13 +31,17 @@ export function CountController({
     onChange: onChangeValue,
   });
 
-  const [tempValue, setTempValue] = useState(String(value));
+  const [tempValue, setTempValue] = useState("");
 
   const handleButtonClick = (direction: -1 | 1) => () => {
-    setValue((prev) => (prev ?? minValue) + direction);
+    setValue((prev) => {
+      const newValue = (prev ?? minValue) + direction;
+      setTempValue(String(newValue));
+      return newValue;
+    });
   };
 
-  const showPlaceholder = [String(minValue), ""].includes(tempValue);
+  const showPlaceholder = tempValue === "";
 
   const inputRef = useRef<HTMLInputElement>(null);
   return (
@@ -78,6 +84,7 @@ export function CountController({
         })}
       >
         <input
+          name={name}
           ref={inputRef}
           onBlur={() => {
             const numberedValue = Number(tempValue);
@@ -92,10 +99,11 @@ export function CountController({
               target: { value },
             } = e;
             const numberedValue = Number(value);
+
             if (Number.isNaN(numberedValue) && value !== "") return;
             setTempValue(value);
           }}
-          value={showPlaceholder ? "" : tempValue}
+          value={tempValue}
           className={css({
             width: "20",
             textAlign: "center",

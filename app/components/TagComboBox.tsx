@@ -66,6 +66,7 @@ function TagInputBox(props: TagsInputRootProps) {
                   asChild
                 >
                   <Combobox.Input
+                    placeholder={tagInput.value.length ? "" : undefined}
                     onKeyDown={(e) => {
                       if (e.key.toLowerCase() === "enter") {
                         tagInput.addValue(e.currentTarget.value);

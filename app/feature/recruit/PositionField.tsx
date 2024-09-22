@@ -1,3 +1,4 @@
+import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { css } from "styled-system/css";
 import { hstack } from "styled-system/patterns";
@@ -5,10 +6,15 @@ import { CountController } from "~/components/CountController";
 import { Combobox } from "~/components/TagComboBox";
 import SvgMinus from "~/icons/lib/Minus";
 import SvgPlus from "~/icons/lib/Plus";
+import { loader } from "~/routes/recruit";
 
 export interface PositionFieldProps {}
 
 export function PositionField({}: PositionFieldProps) {
+  const data = useLoaderData<typeof loader>();
+  const positions = data.positions.map((v) => ({ value: v.id, label: v.name }));
+  const skills = data.skills.map((v) => ({ value: v.id, label: v.name }));
+
   const [fieldsCount, setFieldsCount] = useState(0);
 
   return (
@@ -16,7 +22,8 @@ export function PositionField({}: PositionFieldProps) {
       <Combobox
         selectionBehavior="clear"
         className={css({ width: "100%" })}
-        items={POSITIONS}
+        items={positions}
+        placeholder="포지션을 선택해주세요."
       >
         <Combobox.Control>
           <div className={hstack({ justifyContent: "space-between" })}>
@@ -48,7 +55,7 @@ export function PositionField({}: PositionFieldProps) {
           key={i}
           selectionBehavior="clear"
           className={css({ width: "100%" })}
-          items={POSITIONS}
+          items={positions}
         >
           <Combobox.Control>
             <div className={hstack()}>
@@ -66,9 +73,3 @@ export function PositionField({}: PositionFieldProps) {
     </>
   );
 }
-
-const POSITIONS = [
-  { label: "개발자", value: "dev" },
-  { label: "디자이너", value: "designer" },
-  { label: "기획자", value: "PM" },
-];

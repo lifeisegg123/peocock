@@ -1,12 +1,12 @@
 import { Editor, useCurrentEditor } from "@tiptap/react";
 import { ComponentType } from "react";
 
-export type WithEditorProps = {
+type EditorProps = {
   editor: Editor;
 };
 
-export function withEditor<P extends WithEditorProps>(
-  WrappedComponent: ComponentType<P>
+export function withEditor<P extends object>(
+  WrappedComponent: ComponentType<P & EditorProps>
 ) {
   return function WithLoadingComponent(props: Omit<P, "editor">) {
     const { editor } = useCurrentEditor();

@@ -119,6 +119,56 @@ export const SignUpRequestSchema = {
         provider: {
             type: 'string',
             enum: ['GOOGLE', 'KAKAO']
+        },
+        redirectUri: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const PositionSchema = {
+    required: ['id', 'name'],
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int64'
+        },
+        name: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const SkillSchema = {
+    required: ['id', 'name'],
+    type: 'object',
+    properties: {
+        id: {
+            type: 'integer',
+            format: 'int64'
+        },
+        name: {
+            type: 'string'
+        }
+    }
+} as const;
+
+export const StaticResponseSchema = {
+    required: ['positions', 'skills'],
+    type: 'object',
+    properties: {
+        positions: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/Position'
+            }
+        },
+        skills: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/Skill'
+            }
         }
     }
 } as const;
@@ -207,6 +257,15 @@ export const PageSearchRecruitmentDtoSchema = {
             type: 'integer',
             format: 'int32'
         },
+        first: {
+            type: 'boolean'
+        },
+        last: {
+            type: 'boolean'
+        },
+        pageable: {
+            '$ref': '#/components/schemas/PageableObject'
+        },
         size: {
             type: 'integer',
             format: 'int32'
@@ -227,18 +286,9 @@ export const PageSearchRecruitmentDtoSchema = {
                 '$ref': '#/components/schemas/SortObject'
             }
         },
-        first: {
-            type: 'boolean'
-        },
-        last: {
-            type: 'boolean'
-        },
         numberOfElements: {
             type: 'integer',
             format: 'int32'
-        },
-        pageable: {
-            '$ref': '#/components/schemas/PageableObject'
         },
         empty: {
             type: 'boolean'
@@ -249,16 +299,6 @@ export const PageSearchRecruitmentDtoSchema = {
 export const PageableObjectSchema = {
     type: 'object',
     properties: {
-        offset: {
-            type: 'integer',
-            format: 'int64'
-        },
-        sort: {
-            type: 'array',
-            items: {
-                '$ref': '#/components/schemas/SortObject'
-            }
-        },
         paged: {
             type: 'boolean'
         },
@@ -272,6 +312,16 @@ export const PageableObjectSchema = {
         },
         unpaged: {
             type: 'boolean'
+        },
+        offset: {
+            type: 'integer',
+            format: 'int64'
+        },
+        sort: {
+            type: 'array',
+            items: {
+                '$ref': '#/components/schemas/SortObject'
+            }
         }
     }
 } as const;
