@@ -47,6 +47,7 @@ export default function Recruit() {
       <div
         className={hstack({
           alignItems: "stretch",
+          height: "100%",
           gap: 28,
         })}
       >

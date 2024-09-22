@@ -5,6 +5,7 @@ import { textStyles } from "~/styles/typo";
 
 const globalCss = defineGlobalStyles({
   html: {
+    minHeight: "100%",
     height: "100%",
   },
   "*:focus-visible": {
